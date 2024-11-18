@@ -1,12 +1,30 @@
 package parser;
+import parser.datasource.DataSource;
 import parser.datasource.FileDataSource;
 import parser.datasource.UrlDataSource;
 
+import java.io.Reader;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Main {
     private static final Logger logger = Logger.getLogger("main-logs");
     private static final String API_KEY = "2679a656c844440fb881a6f7c66c3208";
+
+    private static void processArticle(ArticleParser parser, DataSource source){
+        try(Reader reader = source.getReader()){
+            List<Article> articles = parser.parseArticles(reader);
+            articles.forEach(article -> {
+                System.out.println(article.title());
+                System.out.println(article.description());
+                System.out.println(article.publishedAt());
+                System.out.println(article.url());
+                System.out.println();
+            });
+        }catch (Exception e){
+            logger.warning("Error processing articles: " + e.getMessage());
+        }
+    }
 
     /**
      *
@@ -16,12 +34,11 @@ public class Main {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        ArticleProcessor newsApiProcessor = new ArticleProcessor(
-                new NewsApiParser(logger), logger);
-        ArticleProcessor simpleProcessor = new ArticleProcessor(new SimpleJsonParser(logger), logger);
+        NewsApiParser newsApi = new NewsApiParser(logger);
+        SimpleJsonParser simple = new SimpleJsonParser(logger);
 
-        newsApiProcessor.process(new FileDataSource("project_2/inputs/newsapi.txt"));
-        simpleProcessor.process(new FileDataSource("project_2/inputs/simple.txt"));
-        newsApiProcessor.process(new UrlDataSource("http://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY));
+        processArticle(newsApi, new FileDataSource("project_2/inputs/newsapi.txt"));
+        processArticle(simple, new FileDataSource("project_2/inputs/simple.txt"));
+        processArticle(newsApi, new UrlDataSource("http://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY));
     }
 }
