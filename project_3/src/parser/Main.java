@@ -2,6 +2,8 @@ package parser;
 import parser.datasource.DataSource;
 import parser.datasource.FileDataSource;
 import parser.datasource.UrlDataSource;
+import parser.visitor.ParserVisitor;
+import parser.visitor.SourceVisitor;
 
 import java.io.Reader;
 import java.util.List;
@@ -11,20 +13,6 @@ public class Main {
     private static final Logger logger = Logger.getLogger("main-logs");
     private static final String API_KEY = "2679a656c844440fb881a6f7c66c3208";
 
-    private static void processArticle(ArticleParser parser, DataSource source){
-        try(Reader reader = source.getReader()){
-            List<Article> articles = parser.parseArticles(reader);
-            articles.forEach(article -> {
-                System.out.println(article.title());
-                System.out.println(article.description());
-                System.out.println(article.publishedAt());
-                System.out.println(article.url());
-                System.out.println();
-            });
-        }catch (Exception e){
-            logger.warning("Error processing articles: " + e.getMessage());
-        }
-    }
 
     /**
      *
@@ -34,11 +22,19 @@ public class Main {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        NewsApiParser newsApi = new NewsApiParser(logger);
-        SimpleJsonParser simple = new SimpleJsonParser(logger);
+        UserSource newsApi = new UserSource("File", "newsapi");
+        UserSource simple  = new UserSource("File", "simple");
+        UserSource url = new UserSource("URL", "newsapi");
+        DataSource file1 = new FileDataSource("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\newsapi.txt");
+        DataSource file2 = new FileDataSource("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\simple.txt");
+        DataSource urlSource = new UrlDataSource("http://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY);
+        SourceVisitor visitor = new ParserVisitor(logger);
 
-        processArticle(newsApi, new FileDataSource("project_2/inputs/newsapi.txt"));
-        processArticle(simple, new FileDataSource("project_2/inputs/simple.txt"));
-        processArticle(newsApi, new UrlDataSource("http://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY));
+        System.out.println("News file");
+        visitor.visit(newsApi, file1);
+        System.out.println("Simple file");
+        visitor.visit(simple, file2);
+        System.out.println("Url");
+        visitor.visit(url, urlSource);
     }
 }
