@@ -1,6 +1,8 @@
 package parser.visitor;
 
+import parser.UserSource;
+import parser.datasource.DataSource;
+
 public interface SourceVisitor {
-    void visitFileSource(String format);
-    void visitUrlSource(String format);
+    void visit(UserSource format, DataSource source);
 }
