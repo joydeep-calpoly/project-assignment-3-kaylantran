@@ -15,7 +15,6 @@ public class Main {
 
 
     /**
-     *
      * This method loads articles from local files and a live API endpoint, parses them, and
      * displays their details in the specified format.
      *

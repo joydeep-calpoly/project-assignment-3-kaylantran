@@ -2,6 +2,10 @@ package parser;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import parser.datasource.DataSource;
+import parser.datasource.FileDataSource;
+import parser.datasource.UrlDataSource;
+import parser.visitor.ParserVisitor;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -22,7 +26,7 @@ public class ArticleParserTest {
      * Initializes the mock logger and parser instances before each test.
      */
     @BeforeEach
-    void setup() {
+    public void setup() {
         Logger logger = Logger.getLogger("test-log");
         newsApiParser = new NewsApiParser(logger);
         simpleJsonParser = new SimpleJsonParser(logger);
@@ -32,7 +36,7 @@ public class ArticleParserTest {
      * Tests parsing valid NewsAPI JSON input file.
      */
     @Test
-    void testValidNewsApiInput(){
+    public void testValidNewsApiInput(){
         try (Reader reader = new FileReader(Paths.get("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\newsapi.txt").toFile())) {
             List<Article> articles = newsApiParser.parseArticles(reader);
             assertEquals(11, articles.size(), "Expected 11 valid articles from example.json");
@@ -46,7 +50,7 @@ public class ArticleParserTest {
      * Tests parsing a valid Simple JSON input file `simple.txt`.
      */
     @Test
-    void testValidSimpleJsonInput() {
+    public void testValidSimpleJsonInput() {
         try (Reader reader = new FileReader(Paths.get("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\simple.txt").toFile())) {
             List<Article> articles = simpleJsonParser.parseArticles(reader);
             assertEquals(1, articles.size(), "Expected 1 article from simple JSON");
@@ -129,4 +133,38 @@ public class ArticleParserTest {
         assertEquals("http://example.com", article.url(), "The URL does not match");
     }
 
+
+    @Test
+    public void testVisitorNewsApiFile() {
+        Logger logger = Logger.getLogger("test-log");
+        ParserVisitor visitor = new ParserVisitor(logger);
+        UserSource format = new UserSource("File", "newsapi");
+        FileDataSource source = new FileDataSource("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\newsapi.txt");
+        visitor.visit(format, source);
+
+        assertInstanceOf(NewsApiParser.class, visitor.getLastParser(), "Expected NewsApiParser for 'newsapi' format, 'File' type");
+    }
+
+    @Test
+    public void testVisitorSimpleFile() {
+        Logger logger = Logger.getLogger("test-log");
+        ParserVisitor visitor = new ParserVisitor(logger);
+        UserSource format = new UserSource("File", "simple");
+        FileDataSource source = new FileDataSource("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\simple.txt");
+        visitor.visit(format, source);
+
+        assertInstanceOf(SimpleJsonParser.class, visitor.getLastParser(), "Expected SimpleJsonParser for 'simple' format, 'File' type");
+    }
+
+    @Test
+    public void testVisitorUrl() {
+        Logger logger = Logger.getLogger("test-log");
+        String API_KEY = "2679a656c844440fb881a6f7c66c3208";
+        ParserVisitor visitor = new ParserVisitor(logger);
+        UserSource format = new UserSource("URL", "newsapi");
+        DataSource source = new UrlDataSource("http://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY);
+        visitor.visit(format, source);
+
+        assertInstanceOf(NewsApiParser.class, visitor.getLastParser(), "Expected NewsApiParser for 'newsapi' format, 'URL' type");
+    }
 }

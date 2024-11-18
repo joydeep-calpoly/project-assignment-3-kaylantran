@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 public class ParserVisitor implements SourceVisitor{
     private final Logger logger;
+    private ArticleParser lastParser;
 
     public ParserVisitor(Logger logger) {
         this.logger = logger;
@@ -37,6 +38,8 @@ public class ParserVisitor implements SourceVisitor{
             return;
         }
 
+        this.lastParser = parser;
+
         try(Reader reader = source.getReader()){
             List<Article> articles = parser.parseArticles(reader);
             articles.forEach(article -> {
@@ -49,5 +52,14 @@ public class ParserVisitor implements SourceVisitor{
         }catch (Exception e){
             logger.warning("Error processing articles: " + e.getMessage());
         }
+    }
+
+    /**
+     * Gets the last used parser.
+     *
+     * @return last used parser.
+     */
+    public ArticleParser getLastParser(){
+        return lastParser;
     }
 }
