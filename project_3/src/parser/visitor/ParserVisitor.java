@@ -65,7 +65,7 @@ public class ParserVisitor implements SourceVisitor{
      *
      * @return last used parser.
      */
-    public ArticleParser getLastParser(){
+    public ArticleParser getParser(){
         return lastParser;
     }
 }

@@ -144,7 +144,7 @@ public class ArticleParserTest {
         FileDataSource source = new FileDataSource("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\newsapi.txt");
         visitor.visit(format, source);
 
-        assertInstanceOf(NewsApiParser.class, visitor.getLastParser(), "Expected NewsApiParser for 'newsapi' format, 'File' type");
+        assertInstanceOf(NewsApiParser.class, visitor.getParser(), "Expected NewsApiParser for 'newsapi' format, 'File' type");
     }
 
     /**
@@ -158,7 +158,7 @@ public class ArticleParserTest {
         FileDataSource source = new FileDataSource("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\simple.txt");
         visitor.visit(format, source);
 
-        assertInstanceOf(SimpleJsonParser.class, visitor.getLastParser(), "Expected SimpleJsonParser for 'simple' format, 'File' type");
+        assertInstanceOf(SimpleJsonParser.class, visitor.getParser(), "Expected SimpleJsonParser for 'simple' format, 'File' type");
     }
 
     /**
@@ -173,6 +173,6 @@ public class ArticleParserTest {
         DataSource source = new UrlDataSource("http://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY);
         visitor.visit(format, source);
 
-        assertInstanceOf(NewsApiParser.class, visitor.getLastParser(), "Expected NewsApiParser for 'newsapi' format, 'URL' type");
+        assertInstanceOf(NewsApiParser.class, visitor.getParser(), "Expected NewsApiParser for 'newsapi' format, 'URL' type");
     }
 }
