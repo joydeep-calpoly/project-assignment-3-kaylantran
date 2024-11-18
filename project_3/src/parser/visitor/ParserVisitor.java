@@ -14,7 +14,7 @@ public class ParserVisitor implements SourceVisitor{
         this.logger = logger;
     }
 
-    public void processArticles(ArticleParser parser, DataSource source) {
+    private void processArticles(ArticleParser parser, DataSource source) {
         try(Reader reader = source.getReader()){
             List<Article> articles = parser.parseArticles(reader);
             articles.forEach(article -> {
@@ -29,6 +29,14 @@ public class ParserVisitor implements SourceVisitor{
         }
     }
 
+
+    /**
+     * Visits the specified user source and processes articles from the corresponding data source
+     * using the appropriate parser based on the user source's format.
+     *
+     * @param userSource The user-defined source specifying the type and format.
+     * @param source The actual data source containing the articles to be parsed.
+     */
     @Override
     public void visit(UserSource userSource, DataSource source) {
         String format = userSource.getFormat();
