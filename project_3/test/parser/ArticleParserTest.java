@@ -133,7 +133,9 @@ public class ArticleParserTest {
         assertEquals("http://example.com", article.url(), "The URL does not match");
     }
 
-
+    /**
+     * Tests visitor pattern with newsapi file and the creation of the correct parser.
+     */
     @Test
     public void testVisitorNewsApiFile() {
         Logger logger = Logger.getLogger("test-log");
@@ -145,6 +147,9 @@ public class ArticleParserTest {
         assertInstanceOf(NewsApiParser.class, visitor.getLastParser(), "Expected NewsApiParser for 'newsapi' format, 'File' type");
     }
 
+    /**
+     * Tests visitor pattern with simple file and the creation of the correct parser.
+     */
     @Test
     public void testVisitorSimpleFile() {
         Logger logger = Logger.getLogger("test-log");
@@ -156,6 +161,9 @@ public class ArticleParserTest {
         assertInstanceOf(SimpleJsonParser.class, visitor.getLastParser(), "Expected SimpleJsonParser for 'simple' format, 'File' type");
     }
 
+    /**
+     * Tests visitor pattern with newsapi url and the creation of the correct parser.
+     */
     @Test
     public void testVisitorUrl() {
         Logger logger = Logger.getLogger("test-log");

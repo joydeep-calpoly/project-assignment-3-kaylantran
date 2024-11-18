@@ -14,6 +14,12 @@ public class NewsApiParser implements ArticleParser{
     private final ArticleValidator validator;
     private final ArticleFactory factory;
 
+    /**
+     * Constructor for NewsApiParser class.
+     * Structure for a NewsApiParser object.
+     *
+     * @param logger The logger for the news api parser object.
+     */
     public NewsApiParser(Logger logger) {
         this.logger = logger;
         this.validator = new ArticleValidator(logger);

@@ -7,6 +7,11 @@ import java.util.logging.Logger;
 public class ArticleValidator {
     private final Logger logger;
 
+    /**
+     * Constructor for ArticleValidator class. Structure of an ArticleValidator object.
+     *
+     * @param logger The logger for the article validator object.
+     */
     public ArticleValidator(Logger logger) {
         this.logger = logger;
     }

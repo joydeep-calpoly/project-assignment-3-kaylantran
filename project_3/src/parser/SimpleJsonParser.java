@@ -13,6 +13,12 @@ public class SimpleJsonParser implements ArticleParser{
     private final ArticleFactory factory;
     private final ArticleValidator validator;
 
+    /**
+     * Constructor for SimpleJsonParser class.
+     * Structure for a SimpleJsonParser object.
+     *
+     * @param logger The logger for the news api parser object.
+     */
     public SimpleJsonParser(Logger logger){
         this.logger = logger;
         this.validator = new ArticleValidator(logger);
