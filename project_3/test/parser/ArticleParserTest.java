@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -68,5 +70,63 @@ public class ArticleParserTest {
         assertTrue(simpleArticles.isEmpty(), "Expected no articles from empty Simple JSON array");
     }
 
+    /**
+     * Tests parsing a JSON string with a single valid news article to ensure all fields are parsed correctly.
+     */
+    @Test
+    public void testValidNewsArticleFields() {
+        String json = """
+        {
+            "articles": [
+                {
+                    "source": {"id": "test-source-id", "name": "Test Source Name"},
+                    "title": "Test Title",
+                    "description": "Test Description",
+                    "publishedAt": "2024-11-17T12:34:56Z",
+                    "url": "http://example.com",
+                    "content": "This is the content of the test article."
+                }
+            ]
+        }
+    """;
+
+        Reader reader = new StringReader(json);
+        List<Article> articles = newsApiParser.parseArticles(reader);
+        assertEquals(1, articles.size(), "Expected 1 article from the JSON input");
+        Article article = articles.getFirst();
+        LocalDateTime expectedDateTime = LocalDateTime.parse("2024-11-17T12:34:56", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        assertEquals("Test Title", article.title(), "The title does not match");
+        assertEquals("Test Description", article.description(), "The description does not match");
+        assertEquals(expectedDateTime, article.publishedAt(), "The published date does not match");
+        assertEquals("http://example.com", article.url(), "The URL does not match");
+        assertEquals("Test Source Name", article.source().name(), "The source name does not match");
+        assertEquals("test-source-id", article.source().id(), "The source ID does not match");
+    }
+
+    /**
+     * Tests parsing a JSON string with a single valid simple article to ensure all fields are parsed correctly.
+     */
+    @Test
+    public void testParseValidSimpleJsonArticle() {
+        String json = """
+        {
+            "title": "Test Title",
+            "description": "Test Description",
+            "publishedAt": "2024-11-17T12:34:56",
+            "url": "http://example.com"
+        }
+    """;
+
+        Reader reader = new StringReader(json);
+        List<Article> articles = simpleJsonParser.parseArticles(reader);
+        assertEquals(1, articles.size(), "Expected 1 article from the Simple JSON input");
+        Article article = articles.getFirst();
+        LocalDateTime expectedDateTime = LocalDateTime.parse("2024-11-17T12:34:56", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        assertEquals("Test Title", article.title(), "The title does not match");
+        assertEquals("Test Description", article.description(), "The description does not match");
+        assertEquals(expectedDateTime, article.publishedAt(), "The published date does not match");
+        assertEquals("http://example.com", article.url(), "The URL does not match");
+    }
 
 }
