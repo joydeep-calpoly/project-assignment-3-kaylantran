@@ -14,22 +14,6 @@ public class ParserVisitor implements SourceVisitor{
         this.logger = logger;
     }
 
-    private void processArticles(ArticleParser parser, DataSource source) {
-        try(Reader reader = source.getReader()){
-            List<Article> articles = parser.parseArticles(reader);
-            articles.forEach(article -> {
-                System.out.println(article.title());
-                System.out.println(article.description());
-                System.out.println(article.publishedAt());
-                System.out.println(article.url());
-                System.out.println();
-            });
-        }catch (Exception e){
-            logger.warning("Error processing articles: " + e.getMessage());
-        }
-    }
-
-
     /**
      * Visits the specified user source and processes articles from the corresponding data source
      * using the appropriate parser based on the user source's format.
@@ -52,6 +36,18 @@ public class ParserVisitor implements SourceVisitor{
             logger.warning("Unsupported format: " + format);
             return;
         }
-        processArticles(parser, source);
+
+        try(Reader reader = source.getReader()){
+            List<Article> articles = parser.parseArticles(reader);
+            articles.forEach(article -> {
+                System.out.println(article.title());
+                System.out.println(article.description());
+                System.out.println(article.publishedAt());
+                System.out.println(article.url());
+                System.out.println();
+            });
+        }catch (Exception e){
+            logger.warning("Error processing articles: " + e.getMessage());
+        }
     }
 }

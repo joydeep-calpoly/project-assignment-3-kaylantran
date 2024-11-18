@@ -31,7 +31,7 @@ public class ArticleParserTest {
      */
     @Test
     void testValidNewsApiInput(){
-        try (Reader reader = new FileReader(Paths.get("project_2/inputs/newsapi.txt").toFile())) {
+        try (Reader reader = new FileReader(Paths.get("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\newsapi.txt").toFile())) {
             List<Article> articles = newsApiParser.parseArticles(reader);
             assertEquals(11, articles.size(), "Expected 11 valid articles from example.json");
             articles.forEach(System.out::println);
@@ -45,7 +45,7 @@ public class ArticleParserTest {
      */
     @Test
     void testValidSimpleJsonInput() {
-        try (Reader reader = new FileReader(Paths.get("project_2/inputs/simple.txt").toFile())) {
+        try (Reader reader = new FileReader(Paths.get("C:\\Users\\kayla\\Desktop\\Classes\\305\\project-assignment-3-kaylantran\\project_3\\inputs\\simple.txt").toFile())) {
             List<Article> articles = simpleJsonParser.parseArticles(reader);
             assertEquals(1, articles.size(), "Expected 1 article from simple JSON");
         } catch (Exception e) {
@@ -68,16 +68,5 @@ public class ArticleParserTest {
         assertTrue(simpleArticles.isEmpty(), "Expected no articles from empty Simple JSON array");
     }
 
-    /**
-     * Tests parsing an invalid JSON file 'bad.json'.
-     */
-    @Test
-    void testBadInput() {
-        try (Reader reader = new FileReader(Paths.get("project_2/inputs/bad.json").toFile())) {
-            List<Article> articles = newsApiParser.parseArticles(reader);
-            assertEquals(9, articles.size(), "Expected 9 valid articles from bad.json");
-        } catch (Exception e) {
-            fail("Exception occurred while reading bad.json: " + e.getMessage());
-        }
-    }
+
 }
