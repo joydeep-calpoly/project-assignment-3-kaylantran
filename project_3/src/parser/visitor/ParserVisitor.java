@@ -11,6 +11,12 @@ public class ParserVisitor implements SourceVisitor{
     private final Logger logger;
     private ArticleParser lastParser;
 
+    /**
+     * Constructor for ParserVisitor class.
+     * Structure for a ParserVisitor object.
+     *
+     * @param logger The logger for ParserVisitor object.
+     */
     public ParserVisitor(Logger logger) {
         this.logger = logger;
     }

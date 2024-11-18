@@ -7,6 +7,12 @@ import java.io.Reader;
 public class FileDataSource implements DataSource {
     private final String filePath;
 
+    /**
+     * Constructor for FileDataSource class.
+     * Structure for a FileDataSource object.
+     *
+     * @param filePath The file path.
+     */
     public FileDataSource(String filePath){
         this.filePath = filePath;
     }

@@ -11,6 +11,12 @@ import java.net.URL;
 public class UrlDataSource implements DataSource{
     private final String urlString;
 
+    /**
+     * Constructor for UrlDataSource class.
+     * Structure for a UrlDataSource object.
+     *
+     * @param urlString The url string.
+     */
     public UrlDataSource(String urlString){
         this.urlString = urlString;
     }
