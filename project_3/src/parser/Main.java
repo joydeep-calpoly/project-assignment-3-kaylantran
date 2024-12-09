@@ -30,10 +30,10 @@ public class Main {
         SourceVisitor visitor = new ParserVisitor(logger);
 
         System.out.println("News file");
-        visitor.visit(newsApi, file1);
+        newsApi.accept(visitor, file1);
         System.out.println("Simple file");
-        visitor.visit(simple, file2);
+        simple.accept(visitor, file2);
         System.out.println("Url");
-        visitor.visit(url, urlSource);
+        url.accept(visitor, urlSource);
     }
 }

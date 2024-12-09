@@ -64,7 +64,7 @@ public class ParserVisitor implements SourceVisitor{
      * @param source The actual data source containing the articles to be parsed.
      */
     @Override
-    public void vistUrlSource(UserSource userSource, DataSource source) {
+    public void visitUrlSource(UserSource userSource, DataSource source) {
         String format = userSource.getFormat();
         ArticleParser parser;
 

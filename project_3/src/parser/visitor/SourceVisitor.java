@@ -17,5 +17,5 @@ public interface SourceVisitor {
      * @param format The user-defined source specifying the type and format.
      * @param source The actual URL data source containing the articles to be parsed.
      */
-    void vistUrlSource(UserSource format, DataSource source);
+    void visitUrlSource(UserSource format, DataSource source);
 }
