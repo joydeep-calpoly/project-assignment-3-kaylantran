@@ -41,6 +41,7 @@ public class ParserVisitor implements SourceVisitor{
             logger.warning("Unsupported format for file source: " + format);
             return;
         }
+        lastParser = parser;
 
         try(Reader reader = source.getReader()){
             List<Article> articles = parser.parseArticles(reader);
@@ -74,6 +75,7 @@ public class ParserVisitor implements SourceVisitor{
             logger.warning("Unsupported format for URL source: " + format);
             return;
         }
+        lastParser = parser;
 
         try(Reader reader = source.getReader()){
             List<Article> articles = parser.parseArticles(reader);
