@@ -22,29 +22,58 @@ public class ParserVisitor implements SourceVisitor{
     }
 
     /**
-     * Visits the specified user source and processes articles from the corresponding data source
+     * Visits the file source and processes articles from the corresponding data source
      * using the appropriate parser based on the user source's format.
      *
      * @param userSource The user-defined source specifying the type and format.
      * @param source The actual data source containing the articles to be parsed.
      */
     @Override
-    public void visit(UserSource userSource, DataSource source) {
+    public void visitFileSource(UserSource userSource, DataSource source) {
         String format = userSource.getFormat();
-        ArticleParser parser = null;
+        ArticleParser parser;
 
         if ("newsapi".equalsIgnoreCase(format)) {
             parser = new NewsApiParser(logger);
         } else if ("simple".equalsIgnoreCase(format)) {
             parser = new SimpleJsonParser(logger);
-        }
-
-        if (parser == null) {
-            logger.warning("Unsupported format: " + format);
+        } else {
+            logger.warning("Unsupported format for file source: " + format);
             return;
         }
 
-        this.lastParser = parser;
+        try(Reader reader = source.getReader()){
+            List<Article> articles = parser.parseArticles(reader);
+            articles.forEach(article -> {
+                System.out.println(article.title());
+                System.out.println(article.description());
+                System.out.println(article.publishedAt());
+                System.out.println(article.url());
+                System.out.println();
+            });
+        }catch (Exception e){
+            logger.warning("Error processing articles: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Visits the URL source and processes articles from the corresponding data source
+     * using the appropriate parser based on the user source's format.
+     *
+     * @param userSource The user-defined source specifying the type and format.
+     * @param source The actual data source containing the articles to be parsed.
+     */
+    @Override
+    public void vistUrlSource(UserSource userSource, DataSource source) {
+        String format = userSource.getFormat();
+        ArticleParser parser;
+
+        if ("newsapi".equalsIgnoreCase(format)) {
+            parser = new NewsApiParser(logger);
+        } else {
+            logger.warning("Unsupported format for URL source: " + format);
+            return;
+        }
 
         try(Reader reader = source.getReader()){
             List<Article> articles = parser.parseArticles(reader);

@@ -28,7 +28,7 @@ public class UserSource {
 
     public void accept(SourceVisitor visitor){
         if ("File".equalsIgnoreCase(sourceType)) {
-            visitor.visitFileSource(this, dataSource);
+            visitor.visitFileSource(this, visitor);
         } else if ("URL".equalsIgnoreCase(sourceType)) {
             visitor.visitUrlSource(this, dataSource);
         } else {
