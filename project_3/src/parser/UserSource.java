@@ -1,5 +1,7 @@
 package parser;
 
+import parser.visitor.SourceVisitor;
+
 public class UserSource {
     private final String sourceType;
     private final String format;
@@ -22,5 +24,15 @@ public class UserSource {
 
     public String getFormat() {
         return format;
+    }
+
+    public void accept(SourceVisitor visitor){
+        if ("File".equalsIgnoreCase(sourceType)) {
+            visitor.visitFileSource(this, dataSource);
+        } else if ("URL".equalsIgnoreCase(sourceType)) {
+            visitor.visitUrlSource(this, dataSource);
+        } else {
+            throw new IllegalArgumentException("Unsupported source type: " + sourceType);
+        }
     }
 }

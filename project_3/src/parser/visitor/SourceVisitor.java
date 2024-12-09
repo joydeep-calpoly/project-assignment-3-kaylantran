@@ -5,11 +5,17 @@ import parser.datasource.DataSource;
 
 public interface SourceVisitor {
     /**
-     * Visits the specified user source and processes articles from the corresponding data source
-     * using the appropriate parser based on the user source's format.
+     * Visit a File source.
      *
      * @param format The user-defined source specifying the type and format.
-     * @param source The actual data source containing the articles to be parsed.
+     * @param source The actual file data source containing the articles to be parsed.
      */
-    void visit(UserSource format, DataSource source);
+    void visitFileSource(UserSource format, DataSource source);
+    /**
+     * Visit a URL source.
+     *
+     * @param format The user-defined source specifying the type and format.
+     * @param source The actual URL data source containing the articles to be parsed.
+     */
+    void vistUrlSource(UserSource format, DataSource source);
 }
